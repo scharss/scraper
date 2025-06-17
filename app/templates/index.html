@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h3 class="card-title">Intelligent Web Scraper</h3>
+            </div>
+            <div class="card-body">
+                <form id="scrape-form">
+                    <div class="mb-3">
+                        <label for="url" class="form-label">URL a Scrapear</label>
+                        <input type="url" class="form-control" id="url" name="url" placeholder="https://www.example.com" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="prompt" class="form-label">¿Qué información necesitas?</label>
+                        <textarea class="form-control" id="prompt" name="prompt" rows="3" required placeholder="Ej: Extrae el nombre, precio y URL de la imagen de todos los productos."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">
+                        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                        Extraer Datos
+                    </button>
+                </form>
+            </div>
+        </div>
+        
+        <div id="results-container" class="mt-4 d-none">
+            <div class="card">
+                <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                    <h4 class="card-title mb-0">Resultados</h4>
+                    <a href="#" id="download-link" class="btn btn-sm btn-light d-none" download="respuesta.json">Descargar JSON</a>
+                </div>
+                <div class="card-body">
+                    <div id="results-display"></div>
+                    <nav id="pagination-container" class="mt-3"></nav>
+                </div>
+            </div>
+        </div>
+        
+        <div id="error-container" class="mt-4 d-none">
+             <div class="alert alert-danger">
+                 <h4>Error</h4>
+                 <p id="error-message"></p>
+                 <pre><code id="error-raw-response"></code></pre>
+             </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    let fullData = [];
+    let itemsPerPage = 5;
+    
+    function displayPage(page) {
+        const resultsDisplay = document.getElementById('results-display');
+        resultsDisplay.innerHTML = '';
+
+        const startIndex = (page - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        const paginatedItems = fullData.slice(startIndex, endIndex);
+
+        const listGroup = document.createElement('div');
+        listGroup.className = 'list-group';
+
+        paginatedItems.forEach(item => {
+            // Simple card for each item
+            const itemHtml = `
+                <div class="list-group-item">
+                    <pre><code class="json">${JSON.stringify(item, null, 2)}</code></pre>
+                </div>`;
+            listGroup.innerHTML += itemHtml;
+        });
+
+        resultsDisplay.appendChild(listGroup);
+        document.querySelectorAll('#results-display code').forEach((block) => {
+            hljs.highlightElement(block);
+        });
+    }
+
+    function setupPagination() {
+        const paginationContainer = document.getElementById('pagination-container');
+        paginationContainer.innerHTML = '';
+        const pageCount = Math.ceil(fullData.length / itemsPerPage);
+
+        if (pageCount <= 1) return;
+
+        const nav = document.createElement('ul');
+        nav.className = 'pagination justify-content-center';
+
+        for (let i = 1; i <= pageCount; i++) {
+            const li = document.createElement('li');
+            li.className = 'page-item';
+            const a = document.createElement('a');
+            a.className = 'page-link';
+            a.href = '#';
+            a.innerText = i;
+            a.addEventListener('click', (e) => {
+                e.preventDefault();
+                displayPage(i);
+                // Update active state
+                nav.querySelector('.active')?.classList.remove('active');
+                li.classList.add('active');
+            });
+            li.appendChild(a);
+            nav.appendChild(li);
+        }
+        paginationContainer.appendChild(nav);
+        // Set first page as active
+        nav.querySelector('.page-item')?.classList.add('active');
+    }
+
+
+    document.getElementById('scrape-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const form = e.target;
+        const button = form.querySelector('button[type="submit"]');
+        const spinner = button.querySelector('.spinner-border');
+        
+        const resultsContainer = document.getElementById('results-container');
+        const errorContainer = document.getElementById('error-container');
+        const downloadLink = document.getElementById('download-link');
+        const resultsDisplay = document.getElementById('results-display');
+        const paginationContainer = document.getElementById('pagination-container');
+        
+        // Reset state
+        button.disabled = true;
+        spinner.classList.remove('d-none');
+        resultsContainer.classList.add('d-none');
+        errorContainer.classList.add('d-none');
+        downloadLink.classList.add('d-none');
+        resultsDisplay.innerHTML = '';
+        paginationContainer.innerHTML = '';
+
+        const formData = new FormData(form);
+
+        try {
+            const response = await fetch("{{ url_for('main.scrape') }}", {
+                method: 'POST',
+                body: formData
+            });
+
+            const result = await response.json();
+
+            if (result.status === 'success') {
+                // Setup download link
+                const blob = new Blob([JSON.stringify(result.data, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                downloadLink.href = url;
+                downloadLink.classList.remove('d-none');
+                
+                // Find the array in the result data for pagination
+                const arrayKey = Object.keys(result.data).find(key => Array.isArray(result.data[key]));
+                
+                if (arrayKey) {
+                    fullData = result.data[arrayKey];
+                    displayPage(1);
+                    setupPagination();
+                } else {
+                    // If no array, just display the whole JSON
+                    resultsDisplay.innerHTML = `<pre><code class="json">${JSON.stringify(result.data, null, 2)}</code></pre>`;
+                    hljs.highlightElement(resultsDisplay.querySelector('code'));
+                }
+                
+                resultsContainer.classList.remove('d-none');
+
+            } else {
+                document.getElementById('error-message').textContent = result.message;
+                if(result.raw_response) {
+                    document.getElementById('error-raw-response').textContent = result.raw_response;
+                }
+                errorContainer.classList.remove('d-none');
+            }
+
+        } catch (error) {
+            document.getElementById('error-message').textContent = 'An unexpected error occurred.';
+            errorContainer.classList.remove('d-none');
+        } finally {
+            button.disabled = false;
+            spinner.classList.add('d-none');
+        }
+    });
+</script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+
+{% endblock %} 

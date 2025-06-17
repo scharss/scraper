@@ -1,0 +1,12 @@
+crawl4ai
+nest_asyncio
+google-generativeai
+python-dotenv
+Flask
+Flask-SQLAlchemy
+Flask-Migrate
+Flask-Login
+Flask-WTF
+psycopg2-binary
+gunicorn
+email-validator 

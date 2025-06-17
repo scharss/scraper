@@ -1,0 +1,10 @@
+/* Custom styles */
+body {
+    background-color: #f8f9fa;
+}
+
+pre {
+    background-color: #eee;
+    padding: 15px;
+    border-radius: 5px;
+} 
