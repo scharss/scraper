@@ -1,5 +1,67 @@
 # AI Web Scraper
+## 🐳 Docker Installation
 
+The application uses Docker to work consistently across all platforms. Follow these instructions to install it on your system.
+
+### Prerequisites
+
+- [Docker](https://www.docker.com/products/docker-desktop/)
+- [Docker Compose](https://docs.docker.com/compose/install/) (included in Docker Desktop for Windows and Mac)
+- At least 8GB of available RAM
+- Approximately 10GB of disk space (varies depending on the models you download)
+
+### 🪟 Windows Installation
+
+1. **Install Docker Desktop**:
+   - Download [Docker Desktop for Windows](https://www.docker.com/products/docker-desktop/)
+   - Install WSL 2 if necessary (Windows 10/11):
+     ```powershell
+     wsl --install
+     ```
+   - Run the Docker Desktop installer and make sure the "Use WSL 2" option is selected
+   - Restart your computer
+### 🍎 macOS Installation
+
+1. **Install Docker Desktop**:
+   - Download [Docker Desktop for Mac](https://www.docker.com/products/docker-desktop/)
+   - Run the installer (make sure to select the correct version for your Mac: Intel or Apple Silicon)
+
+2. **Clone/Download the Repository**:
+   ```bash
+   git clone https://github.com/scharss/bytecrafterassistant.git
+   cd bytecrafterassistant
+   ```
+   Or download and extract the repository ZIP
+
+3. **Start the Containers**:
+   ```bash
+   docker-compose up -d
+   ```
+### 🐧 Linux Installation
+
+1. **Install Docker and Docker Compose**:
+   - Ubuntu/Debian:
+     ```bash
+     sudo apt update
+     sudo apt install docker.io docker-compose
+     sudo systemctl enable --now docker
+     ```
+   - Fedora/RHEL/CentOS:
+     ```bash
+     sudo dnf install docker docker-compose
+     sudo systemctl enable --now docker
+     ```
+   - Arch Linux:
+     ```bash
+     sudo pacman -S docker docker-compose
+     sudo systemctl enable --now docker
+     ```
+
+2. **Add Your User to the Docker Group** (to use Docker without sudo):
+   ```bash
+   sudo usermod -aG docker $USER
+   ```
+   Log out and back in for the changes to take effect.
 ¿Cómo ejecutar la aplicación?
 Renombra y completa el archivo .env:
 Abre .env y añade tu GEMINI_API_KEY. Puedes dejar la SECRET_KEY y la DATABASE_URL como están para el entorno de desarrollo con Docker.
