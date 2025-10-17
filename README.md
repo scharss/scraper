@@ -62,6 +62,62 @@ The application uses Docker to work consistently across all platforms. Follow th
    sudo usermod -aG docker $USER
    ```
    Log out and back in for the changes to take effect.
+
+
+
+   How to run the application?
+Rename and complete the .env file:
+Open .env and add your GEMINI_API_KEY. You can leave the SECRET_KEY and DATABASE_URL as is for the Docker development environment.
+Check the Gemini AI model in the app/main/routes.py file.
+
+2. Open a terminal and run Docker:
+
+docker-compose-compile
+
+This command will build your application image, download the PostgreSQL image, and launch both containers.
+Initialize the database and create the administrator user:
+Open a new terminal.
+Run the following command to access the application container:
+
+3. Initialize the database and create the administrator user:
+Open a new terminal.
+Run the following command to access the application container:
+
+docker-compose web bash exec
+
+Inside the container, run the command to initialize the database.
+
+FLASK_APP=run.py flask init-db
+
+This will create the tables and an administrator user with the following credentials:
+
+Email: admin@agrocopilot.xyz
+Password: Mmypassword
+Access the application:
+Open your browser and go to http://localhost:5000.
+Log in with administrator credentials and explore all the features.
+
+docker-compose disabled
+
+docker-compose enabled --build
+
+docker-compose web logs
+
+docker-compose enabled -d
+
+docker-compose stopped
+
+docker-compose rm
+
+docker-compose disabled -v
+
+docker-compose logs
+
+docker-compose compiled
+
+docker-compose ps
+
+docker-compose web logs
 ¿Cómo ejecutar la aplicación?
 Renombra y completa el archivo .env:
 Abre .env y añade tu GEMINI_API_KEY. Puedes dejar la SECRET_KEY y la DATABASE_URL como están para el entorno de desarrollo con Docker.
