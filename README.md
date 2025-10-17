@@ -1,4 +1,4 @@
-# Intelligent Web Scraper
+# AI Web Scraper
 
 ¿Cómo ejecutar la aplicación?
 Renombra y completa el archivo .env:
