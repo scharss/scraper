@@ -2,7 +2,7 @@
 Renombra y completa el archivo .env:
 Renombra .env.example a .env.
 Abre .env y añade tu GEMINI_API_KEY. Puedes dejar la SECRET_KEY y la DATABASE_URL como están para el entorno de desarrollo con Docker.
-
+Verifica el modelo de IA de Gemini en el archivo app/main/routes.py
 2.Abre una terminal y ejecuta Docker:
 
   docker-compose up --build
