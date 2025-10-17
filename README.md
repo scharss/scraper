@@ -65,12 +65,12 @@ The application uses Docker to work consistently across all platforms. Follow th
 
 
 
-   How to run the application?
+# 1. How to run the application?
 Rename and complete the .env file:
 Open .env and add your GEMINI_API_KEY. You can leave the SECRET_KEY and DATABASE_URL as is for the Docker development environment.
 Check the Gemini AI model in the app/main/routes.py file.
 
-2. Open a terminal and run Docker:
+# 2. Open a terminal and run Docker:
 
 docker-compose-compile
 
@@ -79,7 +79,7 @@ Initialize the database and create the administrator user:
 Open a new terminal.
 Run the following command to access the application container:
 
-3. Initialize the database and create the administrator user:
+# 3. Initialize the database and create the administrator user:
 Open a new terminal.
 Run the following command to access the application container:
 
