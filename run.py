@@ -18,7 +18,7 @@ def init_db_command():
     admin_user = User.query.filter_by(email=admin_email).first()
     if not admin_user:
         admin = User(email=admin_email, username='admin')
-        admin.set_password('Hholaadmin256@')
+        admin.set_password('Mmipassword')
         admin.role = Role.query.filter_by(name='Administrator').first()
         db.session.add(admin)
         db.session.commit()
