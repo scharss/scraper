@@ -23,7 +23,7 @@ async def process_url_with_smart_prompt(url: str, task_description: str):
         return {"error": f"Error durante el rastreo: {e}"}
 
     try:
-        model = genai.GenerativeModel('gemini-1.5-flash')
+        model = genai.GenerativeModel('gemini-2.5-flash')
         prompt = f"""
         Eres un sistema de extracción de datos experto. Tu tarea es analizar el contenido de una página web
         y cumplir la petición del usuario generando un objeto JSON estructurado.
