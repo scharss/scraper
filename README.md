@@ -26,9 +26,6 @@ Dentro del contenedor, ejecuta el comando para inicializar la base de datos.
 FLASK_APP=run.py flask init-db
 
 
-flask init-db
-
-
 Esto creará las tablas y un usuario administrador con las siguientes credenciales:
 
 Email: admin@agrocopilot.xyz
