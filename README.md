@@ -118,12 +118,14 @@ docker-compose compiled
 docker-compose ps
 
 docker-compose web logs
-¿Cómo ejecutar la aplicación?
+
+
+# 1. ¿Cómo ejecutar la aplicación?
 Renombra y completa el archivo .env:
 Abre .env y añade tu GEMINI_API_KEY. Puedes dejar la SECRET_KEY y la DATABASE_URL como están para el entorno de desarrollo con Docker.
 Verifica el modelo de IA de Gemini en el archivo app/main/routes.py
 
-2.Abre una terminal y ejecuta Docker:
+# 2.Abre una terminal y ejecuta Docker:
 
   docker-compose up --build
 
@@ -133,7 +135,7 @@ Abre una nueva terminal.
 Ejecuta el siguiente comando para acceder al contenedor de la aplicación:
 
 
-3.Inicializa la base de datos y crea el usuario administrador:
+# 3.Inicializa la base de datos y crea el usuario administrador:
 Abre una nueva terminal.
 Ejecuta el siguiente comando para acceder al contenedor de la aplicación:
 
