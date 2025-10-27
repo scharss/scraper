@@ -145,7 +145,8 @@ Dentro del contenedor, ejecuta el comando para inicializar la base de datos.
 
 FLASK_APP=run.py flask init-db
 
-
+admin_email = admin@ejemplo.com
+password= Mmipassword
 
 Abre tu navegador y ve a http://localhost:5000.
 Inicia sesión con las credenciales del administrador y explora todas las funcionalidades.
