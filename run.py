@@ -14,7 +14,7 @@ def init_db_command():
     """Creates the database tables and admin user."""
     db.create_all()
     Role.insert_roles()
-    admin_email = "admin@agrocopilot.xyz"
+    admin_email = "admin@ejemplo.com"
     admin_user = User.query.filter_by(email=admin_email).first()
     if not admin_user:
         admin = User(email=admin_email, username='admin')
