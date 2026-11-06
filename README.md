@@ -28,8 +28,8 @@ The application uses Docker to work consistently across all platforms. Follow th
 
 2. **Clone/Download the Repository**:
    ```bash
-   git clone https://github.com/scharss/bytecrafterassistant.git
-   cd bytecrafterassistant
+   git clone https://github.com/scharss/scraper.git
+   cd scraper
    ```
    Or download and extract the repository ZIP
 
